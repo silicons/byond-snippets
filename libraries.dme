@@ -17,10 +17,12 @@
 #include "code\_defines\output.dm"
 #include "code\_defines\planes.dm"
 #include "code\_defines\tick.dm"
+#include "code\icons\blend.dm"
 #include "code\icons\render.dm"
 #include "code\interfaces\appearance.dm"
 #include "code\mapping\render.dm"
 #include "code\sorting\_comparison.dm"
+#include "code\sorting\auto.dm"
 #include "code\sorting\insert.dm"
 // END_INCLUDE
 
