@@ -1,0 +1,18 @@
+{
+	"search.exclude": {
+		"**/.yarn": true,
+		"**/.pnp.*": true
+	},
+	"files.eol": "\n",
+	"files.insertFinalNewline": true,
+	"gitlens.advanced.blame.customArguments": ["-w"],
+	"[javascript]": {
+		"editor.rulers": [80]
+	},
+	"[typescript]": {
+		"editor.rulers": [80]
+	},
+	"[scss]": {
+		"editor.rulers": [80]
+	}
+}

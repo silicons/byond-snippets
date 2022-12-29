@@ -1,0 +1,24 @@
+// DM Environment file for libraries.dme.
+// All manual changes should be made outside the BEGIN_ and END_ blocks.
+// New source code should be placed in .dm files: choose File/New --> Code File.
+
+// BEGIN_INTERNALS
+// END_INTERNALS
+
+// BEGIN_FILE_DIR
+#define FILE_DIR .
+// END_FILE_DIR
+
+// BEGIN_PREFERENCES
+// END_PREFERENCES
+
+// BEGIN_INCLUDE
+#include "code\_defines\icons.dm"
+#include "code\_defines\output.dm"
+#include "code\_defines\planes.dm"
+#include "code\_defines\tick.dm"
+#include "code\icons\render.dm"
+#include "code\interfaces\appearance.dm"
+#include "code\mapping\render.dm"
+// END_INCLUDE
+
