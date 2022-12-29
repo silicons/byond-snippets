@@ -18,7 +18,6 @@
     ASSERT(bottomleft.x <= topright.x)
     ASSERT(bottomleft.y <= topright.y)
 
-    var/list/turf/turfs = block(bottomleft, topright)
     // coord bounds
     var/c_width = topright.x - bottomleft.x + 1
     var/c_height = topright.y - bottomleft.y + 1
@@ -30,6 +29,18 @@
     var/icon/slate = icon(BLANK_ICON_32X32, "")
     // scale to size
     slate.Scale(p_width, p_height)
+
+    // we can avoid some unnecessary float math by just for'ing instead of for turf in
+    var/processed = 0
+    var/lim
+    for(var/x in bottomleft.x to topright.x)
+        for(var/y in bottomleft.y to topright.y)
+            // max 50 atoms per tile
+            lim = 50
+            var/list/sorted = 
+
+            ++processed
+            
     
 /**
  * downloads a rendered part of the map

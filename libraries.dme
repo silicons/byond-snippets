@@ -20,5 +20,7 @@
 #include "code\icons\render.dm"
 #include "code\interfaces\appearance.dm"
 #include "code\mapping\render.dm"
+#include "code\sorting\_comparison.dm"
+#include "code\sorting\insert.dm"
 // END_INCLUDE
 
