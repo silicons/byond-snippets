@@ -40,6 +40,11 @@
  * * d_icon - default icon
  */
 /proc/render_icon_internal(appearance/A, no_anim, d_dir, d_icon)
+	// sanity
+	if(length(A.underlays) > 50 || length(A.overlays) > 50)
+		WORLD_VERBOSE("Skipping [isatom(A)? A : ref(A)] - >50 underlays or overlays")
+		return
+
 	// start with blank slate
 	var/icon/slate = icon(BLANK_ICON_32X32, "")
 

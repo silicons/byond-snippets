@@ -22,7 +22,7 @@
  * * bottomleft - bottom left turf
  * * topright - top right turf
  */
-/proc/render_map(turf/bottomleft, turf/topright)
+/proc/render_map(turf/bottomleft, turf/topright, ignore_mobs)
 	ASSERT(bottomleft)
 	ASSERT(topright)
 	ASSERT(bottomleft.z == topright.z)
@@ -48,34 +48,46 @@
 	// we can avoid some unnecessary float math by just for'ing instead of for turf in
 	var/processed = 0
 	WORLD_VERBOSE("rendering map z-index [z]")
+	WORLD_VERBOSE("map render - gathering turfs...")
+	var/list/atom/movable/movables = list()
+	// first iterate turfs
 	for(var/x in bottomleft.x to topright.x)
 		for(var/y in bottomleft.y to topright.y)
 			var/rel_x = x - bl_x
 			var/rel_y = y - bl_y
 			var/turf/T = locate(x, y, z)
-			// max 20 atoms per tile
-			var/list/sorted = insertion_sort(T.contents.Copy(1, 20))
-			for(var/atom/A as anything in sorted)
-				if(isarea(A))
-					// don't care, did NOT ask
+			// grab atoms
+			for(var/atom/movable/AM as anything in T)
+				if(isarea(AM))
+					// don't care
 					continue
-				if(A.plane in __map_render_ignore_planes)
-					// ignore this plane
+				if(ignore_mobs && ismob(AM))
+					// don't care
 					continue
-				var/off_x
-				var/off_y
-				if(ismovable(A))
-					var/atom/movable/AM = A
-					off_x = AM.step_x + AM.pixel_x
-					off_y = AM.step_y + AM.pixel_y
-				else
-					off_x = A.pixel_x
-					off_y = A.pixel_y
-				slate.Blend(render_icon(A, no_anim = TRUE), x = rel_x * world.icon_size + 1 + off_x, y = rel_y * world.icon_size + 1 + off_y)
-			++processed
+				if(AM.plane in __map_render_ignore_planes)
+					// don't care
+					continue
+				movables += AM
+			// render turf
+			slate.Blend(render_icon(T, no_anim = TRUE), x = rel_x * world.icon_size + 1, y = rel_y * world.icon_size + 1)
 			YIELD_FOR_LAG
 			if(!(processed % 1000))
-				WORLD_VERBOSE("map render: [processed]...")
+				WORLD_VERBOSE("map render - gather/slate render: [processed]...")
+	// sort movables
+	auto_sort(movables, /proc/cmp_atom_layering_asc)
+	// process
+	processed = 0
+	WORLD_VERBOSE("map render - gather complete, blending movables...")
+	for(var/atom/movable/AM as anything in movables)
+		var/rel_x = AM.x - bl_x
+		var/rel_y = AM.y -
+		var/off_x = AM.step_x + AM.pixel_x
+		var/off_y = AM.step_y + AM.pixel_y
+		slate.Blend(render_icon(A, no_anim = TRUE), x = rel_x * world.icon_size + 1 + off_x, y = rel_y * world.icon_size + 1 + off_y)
+		++processed
+		YIELD_FOR_LAG
+		if(!(processed % 1000))
+			WORLD_VERBOSE("map render - rendering movables: [processed]...")
 	return slate
 
 /**
@@ -85,8 +97,8 @@
  * * bottomleft - bottom left turf
  * * topright - top right turf
  */
-/client/proc/download_rendered_map(turf/bottomleft, turf/topright)
-	var/icon/rendered = render_map(bottomleft, topright)
+/client/proc/download_rendered_map(turf/bottomleft, turf/topright, ignore_mobs)
+	var/icon/rendered = render_map(bottomleft, topright, ignore_mobs)
 	if(!rendered)
 		return
 	src << ftp(rendered, "map-render-[rand(0,999999)].png")
@@ -97,8 +109,8 @@
  * @params
  * * z - level index
  */
-/client/proc/download_rendered_map_level(z)
-	var/icon/rendered = render_map_level(z)
+/client/proc/download_rendered_map_level(z, ignore_mobs)
+	var/icon/rendered = render_map_level(z, ignore_mobs)
 	if(!rendered)
 		return
 	src << ftp(rendered, "map-render-[rand(0,999999)].png")
