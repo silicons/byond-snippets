@@ -80,7 +80,7 @@
 	WORLD_VERBOSE("map render - gather complete, blending movables...")
 	for(var/atom/movable/AM as anything in movables)
 		var/rel_x = AM.x - bl_x
-		var/rel_y = AM.y -
+		var/rel_y = AM.y - bl_y
 		var/off_x = AM.step_x + AM.pixel_x
 		var/off_y = AM.step_y + AM.pixel_y
 		slate.Blend(render_icon(A, no_anim = TRUE), x = rel_x * world.icon_size + 1 + off_x, y = rel_y * world.icon_size + 1 + off_y)

@@ -14,9 +14,12 @@
 
 // BEGIN_INCLUDE
 #include "code\_defines\icons.dm"
+#include "code\_defines\istype.dm"
 #include "code\_defines\output.dm"
 #include "code\_defines\planes.dm"
 #include "code\_defines\tick.dm"
+#include "code\icon_gen\cursor.dm"
+#include "code\icon_gen\emit.dm"
 #include "code\icons\blend.dm"
 #include "code\icons\render.dm"
 #include "code\interfaces\appearance.dm"
@@ -24,5 +27,6 @@
 #include "code\sorting\_comparison.dm"
 #include "code\sorting\auto.dm"
 #include "code\sorting\insert.dm"
+#include "code_demo\icon_gen.dm"
 // END_INCLUDE
 
